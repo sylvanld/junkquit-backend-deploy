@@ -29,6 +29,7 @@ jobs:
         python3 <<EOF
         import json
         import os
+        import re
         import requests
 
         if os.getenv("IMAGE_TAG") is None:
