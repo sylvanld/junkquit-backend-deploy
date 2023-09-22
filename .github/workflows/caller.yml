@@ -1,0 +1,11 @@
+
+name: "Call other workflow"
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  start-workflow:
+    uses: sylvanld/junkquit-backend-deploy/.github/workflows/main.yml@main
