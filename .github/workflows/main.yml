@@ -1,9 +1,6 @@
 name: Deploy JunkQuit backend
 
 on:
-  push:
-    branches:
-      - main
   workflow_call:
     inputs:
       cookbook-api-version:
@@ -26,9 +23,24 @@ jobs:
     - name: "Install script dependencies"
       run: pip install requests
     - name: "Get list of tags matching specified versions"
+      env:
+        IMAGE_TAG: ${{ inputs.cookbook-api-version }}
       run: |
         python3 <<EOF
+        import json
+        import os
         import requests
-        response = requests.get("https://hub.docker.com/v2/repositories/sylvanld/blog/tags")
-        print(response.json())
+
+        if os.getenv("IMAGE_TAG") is None:
+          raise Exception("Expected environment variable IMAGE_TAG to be defined")
+        TAG_PATTERN = re.compile("^" + os.environ["IMAGE_TAG"] + "$")
+        
+        response = requests.get("https://hub.docker.com/v2/repositories/sylvanld/shopeat/tags")
+        response_data = response.json()
+        image_tags = response_data["results"]
+        try:
+          latest_matching_tag = next(tag for tag in image_tags if TAG_PATTERN.match())
+          print(json.dumps(latest_matching_tag, indent=4))
+        except StopIteration:
+          raise Exception("Unable to find a tag matching pattern: %s" % TAG_PATTERN)
         EOF
