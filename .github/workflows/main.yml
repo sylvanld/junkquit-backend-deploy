@@ -18,7 +18,7 @@ jobs:
     steps:
       - name: "Get latest redis tag"
         id: get-redis-tag
-        uses: sylvanld/action-search-docker-tag@v1
+        uses: sylvanld/action-search-docker-tag@577c75ea812043488a64cfae3baed46c4b62af96
         with:
           image: 'sylvanld/shopeat'
           search: '\d+\.\d+\.\d+'
