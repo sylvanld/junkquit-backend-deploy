@@ -1,0 +1,31 @@
+name: Deploy JunkQuit backend
+
+on:
+  workflow_call:
+    inputs:
+      cookbook-api-version:
+        required: false
+        type: string
+        default: \d+\.\d+\.\d+
+      shopping-api-version:
+        required: false
+        type: string
+        default: \d+\.\d+\.\d+
+
+jobs:
+  get-images-versions:
+    runs-on: ubuntu-latest
+    steps:
+    - name: "Setup Python"
+      uses: actions/setup-python@v4.7.0
+      with:
+        python-version: 3.10
+    - name: "Install script dependencies"
+      run: pip install requests
+    - name: "Get list of tags matching specified versions"
+      run: |
+        python3 <<EOF
+        import requests
+        response = requests.get("https://hub.docker.com/v2/repositories/sylvanld/blog/tags")
+        print(response.json())
+        EOF
