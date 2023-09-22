@@ -16,32 +16,12 @@ jobs:
   get-images-versions:
     runs-on: ubuntu-latest
     steps:
-    - name: "Setup Python"
-      uses: actions/setup-python@v4.7.0
-      with:
-        python-version: "3.10"
-    - name: "Install script dependencies"
-      run: pip install requests
-    - name: "Get list of tags matching specified versions"
-      env:
-        IMAGE_TAG: ${{ inputs.cookbook-api-version }}
-      run: |
-        python3 <<EOF
-        import json
-        import os
-        import re
-        import requests
+      - name: "Get latest redis tag"
+        id: get-redis-tag
+        uses: sylvanld/action-search-docker-tag@v1
+        with:
+          image: 'sylvanld/shopeat'
+          search: '\d+\.\d+\.\d+'
 
-        if os.getenv("IMAGE_TAG") is None:
-          raise Exception("Expected environment variable IMAGE_TAG to be defined")
-        TAG_PATTERN = re.compile("^" + os.environ["IMAGE_TAG"] + "$")
-        
-        response = requests.get("https://hub.docker.com/v2/repositories/sylvanld/shopeat/tags")
-        response_data = response.json()
-        image_tags = response_data["results"]
-        try:
-          latest_matching_tag = next(tag for tag in image_tags if TAG_PATTERN.match(tag["name"]))
-          print(json.dumps(latest_matching_tag, indent=4))
-        except StopIteration:
-          raise Exception("Unable to find a tag matching pattern: %s" % TAG_PATTERN)
-        EOF
+      - name: "Get the output time"
+        run: echo "Redis latest version -> ${{ steps.get-redis-tag.outputs.tag }}"
