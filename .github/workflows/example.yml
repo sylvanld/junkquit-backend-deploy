@@ -6,7 +6,7 @@ on:
 
 jobs:
   release:
-    if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'version/')
     runs-on: ubuntu-latest
     steps:
       - name: "Do weird deployment"
