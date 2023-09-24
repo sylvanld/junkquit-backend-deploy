@@ -1,0 +1,14 @@
+on:
+  pull_request:
+    branches:
+      - main
+    types: [closed]
+
+jobs:
+  release:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Do weird deployment"
+        run: echo "Source branch ${{ github.head_ref }}"
+    
