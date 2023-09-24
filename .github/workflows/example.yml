@@ -15,5 +15,8 @@ jobs:
           export BRANCH_NAME="${{ github.head_ref }}"
           echo "version=${BRANCH_NAME/version\//}" >> $GITHUB_OUTPUT
       
-      - name: "Display parsed version"
-        run: "echo ${{ steps.parse-version.outputs.version }}"
+      - name: "Create git tag"
+        run: |
+          export VERSION="${{ steps.parse-version.outputs.version }}"
+          git tag $VERSION
+          git push --tags
