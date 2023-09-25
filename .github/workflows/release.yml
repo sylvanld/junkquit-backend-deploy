@@ -9,7 +9,7 @@ on:
         type: string
         required: true
       deploy:
-        description: 'Whether deployment workflow should be called on successful release'
+        description: 'Run deployment workflow'
         type: boolean
         default: true
 
@@ -17,6 +17,7 @@ jobs:
   release-docker-image:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - name: "Show content"
         run: ls
       - name: "Git status"
