@@ -17,5 +17,7 @@ jobs:
   release-docker-image:
     runs-on: ubuntu-latest
     steps:
-      - name: "Toto"
-        run: echo toto
+      - name: "Show content"
+        run: ls
+      - name: "Git status"
+        run: git status
