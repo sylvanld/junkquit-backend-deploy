@@ -1,0 +1,21 @@
+
+name: "Create release"
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to be released'
+        type: string
+        required: true
+      deploy:
+        description: 'Whether deployment workflow should be called on successful release'
+        type: boolean
+        default: true
+
+jobs:
+  release-docker-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Toto"
+        run: echo toto
