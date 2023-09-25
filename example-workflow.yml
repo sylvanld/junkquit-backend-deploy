@@ -1,0 +1,27 @@
+name: Deploy JunkQuit backend
+
+on:
+  workflow_call:
+    inputs:
+      cookbook-api-version:
+        required: false
+        type: string
+        default: \d+\.\d+\.\d+
+      shopping-api-version:
+        required: false
+        type: string
+        default: \d+\.\d+\.\d+
+
+jobs:
+  get-images-versions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Get latest redis tag"
+        id: get-redis-tag
+        uses: sylvanld/action-search-docker-tag@577c75ea812043488a64cfae3baed46c4b62af96
+        with:
+          image: 'sylvanld/shopeat'
+          search: '\d+\.\d+\.\d+'
+
+      - name: "Get the output time"
+        run: echo "Redis latest version -> ${{ steps.get-redis-tag.outputs.tag }}"
