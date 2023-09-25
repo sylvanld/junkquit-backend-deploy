@@ -1,5 +1,5 @@
 
-name: "Create release"
+name: "Create release ${{ inputs.version }}"
 
 on:
   workflow_dispatch:
@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: "Show content"
-        run: ls
-      - name: "Git status"
-        run: git status
+      - name: "Create tag"
+        run: |
+          git tag "${{ inputs.version }}"
+          git push --tags
